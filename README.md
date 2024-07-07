@@ -20,4 +20,4 @@ First, you need to train the model using your custom dataset. Follow these steps
 After training the model, you can run the Streamlit application to detect helmets in images. Use the following command:
 
 ```sh
-streamlit run helmet_safety_detection.py
+streamlit run app.py
