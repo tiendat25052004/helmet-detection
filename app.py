@@ -5,8 +5,14 @@ from PIL import Image
 import cv2
 
 # Load the model
-MODEL_PATH = 'weights/best.pt'
+MODEL_PATH = 'weights/best.pt'  # Path to your model weights
 model = YOLOv10(MODEL_PATH)
+
+COLORS = {
+    'head': (0, 255, 0),    # Green
+    'helmet': (255, 0, 0),  # Blue
+    'person': (0, 0, 255)   # Red
+}
 
 
 def helmet_detection(image):
@@ -22,11 +28,13 @@ def helmet_detection(image):
             label = result.names[int(box[5])]
             score = box[4]
 
+            color = COLORS.get(label, (255, 255, 255))
+
             # Draw bounding box
-            cv2.rectangle(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.rectangle(image_np, (x1, y1), (x2, y2), color, 2)
             # Draw label and score
-            cv2.putText(image_np, f'{label} {score:.2f}', (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.putText(image_np, f"{label} {score:.2f}", (x1, y1 - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     return image_np
 
@@ -54,7 +62,7 @@ st.markdown(
 
 # Main interface
 st.title("Helmet Safety Detection 🚧")
-st.markdown("## Ensure Safety Compliance with Real-Time Detection")
+st.markdown("## Ensure Safety Compliance with Detection")
 
 # Columns for layout
 col1, col2 = st.columns([1, 2])
@@ -71,7 +79,7 @@ with col2:
         result_image = helmet_detection(image)
         if result_image is not None:
             st.image(result_image, caption="Detected Helmets",
-                     use_column_width=True)
+                     width=500)
 
 # Footer
 st.markdown(
@@ -81,7 +89,7 @@ st.markdown(
         visibility: hidden;
     }
     footer:after {
-        content:'Made with ❤️ by [Your Name]';
+        content:'Made with ❤️ by TRUONGDAT';
         visibility: visible;
         display: block;
         position: relative;
