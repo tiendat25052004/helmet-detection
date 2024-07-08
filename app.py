@@ -9,7 +9,7 @@ MODEL_PATH = 'weights/best.pt'
 model = YOLOv10(MODEL_PATH)
 
 
-def helmet_safety_detection(image):
+def helmet_detection(image):
     # Convert the image to numpy array
     image_np = np.array(image.convert("RGB"))
 
@@ -68,7 +68,7 @@ with col2:
     st.header("Detection Result")
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        result_image = helmet_safety_detection(image)
+        result_image = helmet_detection(image)
         if result_image is not None:
             st.image(result_image, caption="Detected Helmets",
                      use_column_width=True)
