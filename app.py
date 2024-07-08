@@ -4,15 +4,19 @@ import numpy as np
 from PIL import Image
 import cv2
 
-# Load the model
+# Constants and Configuration
 MODEL_PATH = 'weights/best.pt'  # Path to your model weights
-model = YOLOv10(MODEL_PATH)
 
 COLORS = {
     'head': (0, 255, 0),    # Green
     'helmet': (255, 0, 0),  # Blue
     'person': (0, 0, 255)   # Red
 }
+
+# Load the model
+model = YOLOv10(MODEL_PATH)
+
+# Function to detect helmets in the image
 
 
 def helmet_detection(image):
@@ -45,22 +49,32 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Custom CSS for background and footer
 st.markdown(
     """
     <style>
-    .reportview-container {
-        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/memphis-mini.png");
-        background-size: cover;
+    .reportview-container .main .block-container {
+        background-color: #f5f5f5;
+        color: #333333;
     }
     .sidebar .sidebar-content {
-        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/memphis-mini.png");
+        background-color: #f5f5f5;
+        color: #333333;
+    }
+    .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Main interface
+# Main Application Logic
 st.title("Helmet Safety Detection 🚧")
 st.markdown("## Ensure Safety Compliance with Detection")
 
@@ -78,25 +92,14 @@ with col2:
         image = Image.open(uploaded_file)
         result_image = helmet_detection(image)
         if result_image is not None:
-            st.image(result_image, caption="Detected Helmets",
-                     width=500)
+            st.image(result_image, caption="Detected Helmets", width=500)
 
 # Footer
 st.markdown(
     """
-    <style>
-    footer {
-        visibility: hidden;
-    }
-    footer:after {
-        content:'Made with ❤️ by TRUONGDAT';
-        visibility: visible;
-        display: block;
-        position: relative;
-        padding: 10px;
-        top: 2px;
-    }
-    </style>
+    <div class="footer">
+        Made with ❤️ by TRUONGDAT
+    </div>
     """,
     unsafe_allow_html=True
 )
