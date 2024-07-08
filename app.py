@@ -4,9 +4,19 @@ import numpy as np
 from PIL import Image
 import cv2
 
+# Constants and Configuration
+MODEL_PATH = 'weights/best.pt'  # Path to your model weights
+
+COLORS = {
+    'head': (0, 255, 0),    # Green
+    'helmet': (255, 0, 0),  # Blue
+    'person': (0, 0, 255)   # Red
+}
+
 # Load the model
-MODEL_PATH = 'weights/best.pt'
 model = YOLOv10(MODEL_PATH)
+
+# Function to detect helmets in the image
 
 
 def helmet_detection(image):
@@ -22,11 +32,13 @@ def helmet_detection(image):
             label = result.names[int(box[5])]
             score = box[4]
 
+            color = COLORS.get(label, (255, 255, 255))
+
             # Draw bounding box
-            cv2.rectangle(image_np, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.rectangle(image_np, (x1, y1), (x2, y2), color, 2)
             # Draw label and score
-            cv2.putText(image_np, f'{label} {score:.2f}', (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.putText(image_np, f"{label} {score:.2f}", (x1, y1 - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     return image_np
 
@@ -37,24 +49,34 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Custom CSS for background and footer
 st.markdown(
     """
     <style>
-    .reportview-container {
-        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/memphis-mini.png");
-        background-size: cover;
+    .reportview-container .main .block-container {
+        background-color: #f5f5f5;
+        color: #333333;
     }
     .sidebar .sidebar-content {
-        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/memphis-mini.png");
+        background-color: #f5f5f5;
+        color: #333333;
+    }
+    .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Main interface
+# Main Application Logic
 st.title("Helmet Safety Detection 🚧")
-st.markdown("## Ensure Safety Compliance with Real-Time Detection")
+st.markdown("## Ensure Safety Compliance with Detection")
 
 # Columns for layout
 col1, col2 = st.columns([1, 2])
@@ -70,25 +92,14 @@ with col2:
         image = Image.open(uploaded_file)
         result_image = helmet_detection(image)
         if result_image is not None:
-            st.image(result_image, caption="Detected Helmets",
-                     use_column_width=True)
+            st.image(result_image, caption="Detected Helmets", width=500)
 
 # Footer
 st.markdown(
     """
-    <style>
-    footer {
-        visibility: hidden;
-    }
-    footer:after {
-        content:'Made with ❤️ by [Your Name]';
-        visibility: visible;
-        display: block;
-        position: relative;
-        padding: 10px;
-        top: 2px;
-    }
-    </style>
+    <div class="footer">
+        Made with ❤️ by TRUONGDAT
+    </div>
     """,
     unsafe_allow_html=True
 )
