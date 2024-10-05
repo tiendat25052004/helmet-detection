@@ -2,6 +2,8 @@
 
 Welcome to the Helmet Detection project! This application leverages the power of YOLOv10 to detect safety helmets in images, ensuring safety compliance in various environments such as construction sites, factories, and traffic.
 
+![Product Demo](demo.png)
+
 ## 📜 Overview
 
 This project aims to provide real-time helmet detection using the YOLOv10 model. The model is trained on a custom dataset and deployed using Streamlit to create an interactive web application.
