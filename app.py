@@ -1,5 +1,5 @@
 import streamlit as st
-from ultralytics import YOLOv10
+from ultralytics import YOLO
 import numpy as np
 from PIL import Image
 import cv2
@@ -14,7 +14,7 @@ COLORS = {
 }
 
 # Load the model
-model = YOLOv10(MODEL_PATH)
+model = YOLO(MODEL_PATH)
 
 # Function to detect helmets in the image
 
@@ -24,7 +24,7 @@ def helmet_detection(image):
     image_np = np.array(image.convert("RGB"))
 
     # Use the model to predict bounding boxes and labels
-    results = model.predict(image_np)
+    results = model.predict(image_np, conf = 0.25)
 
     for result in results:
         for box in result.boxes.data:
