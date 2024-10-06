@@ -3,7 +3,6 @@ from ultralytics import YOLO
 import numpy as np
 from PIL import Image
 import cv2
-
 # Constants and Configuration
 MODEL_PATH = 'weights/best.pt'  # Path to your model weights
 
